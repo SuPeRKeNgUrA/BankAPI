@@ -1,0 +1,64 @@
+[
+  {
+    "id": 1,
+    "name": "Denis",
+    "surname": "Makarov",
+    "phone": "89150675376",
+    "passport": "5673673567",
+    "account": [
+      {
+        "id": 2,
+        "account": "7356454734625343",
+        "balance": 5500.0,
+        "card": {
+          "id": 2,
+          "number": "2300475634367493",
+          "state": "Active",
+          "monthUntil": 7,
+          "dayUntil": 28
+        }
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "name": "Ivan",
+    "surname": "Panin",
+    "phone": "89104568765",
+    "passport": "4518978634",
+    "account": [
+      {
+        "id": 1,
+        "account": "4058354637462435",
+        "balance": 2000.45,
+        "card": {
+          "id": 1,
+          "number": "2200283645372635",
+          "state": "Active",
+          "monthUntil": 6,
+          "dayUntil": 12
+        }
+      },
+      {
+        "id": 3,
+        "account": "8765374652343847",
+        "balance": 8000.75,
+        "card": {
+          "id": 3,
+          "number": "2400353784634236",
+          "state": "Frozen",
+          "monthUntil": 12,
+          "dayUntil": 5
+        }
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "name": "Maks",
+    "surname": "Zolotov",
+    "phone": "89804624531",
+    "passport": "4519745213",
+    "account": []
+  }
+]
