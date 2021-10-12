@@ -1,10 +1,10 @@
 {
-  "id": 2,
-  "account": "7356454734625343",
-  "balance": 15500.0,
+  "id": 3,
+  "account": "6574635243567833",
+  "balance": 26000.0,
   "card": {
-    "id": 2,
-    "number": "2300475634367493",
+    "id": 3,
+    "number": "4400354676542233",
     "state": "Active",
     "monthUntil": 7,
     "dayUntil": 28

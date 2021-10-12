@@ -10,5 +10,17 @@
       "monthUntil": 7,
       "dayUntil": 28
     }
+  },
+  {
+    "id": 4,
+    "account": "9876567865432321",
+    "balance": 7000.0,
+    "card": {
+      "id": 5,
+      "number": "2400353784634236",
+      "state": "Frozen",
+      "monthUntil": 12,
+      "dayUntil": 5
+    }
   }
 ]

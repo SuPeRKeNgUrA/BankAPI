@@ -12,7 +12,8 @@ CREATE TABLE PERSONS (
 INSERT INTO PERSONS (name, surname, phone, passport) VALUES
                                                                      ('Denis', 'Makarov', '89150675376', '5673673567'),
                                                                      ('Ivan', 'Panin', '89104568765', '4518978634'),
-                                                                     ('Maks', 'Zolotov', '89804624531', '4519745213');
+                                                                     ('Maks', 'Zolotov', '89804624531', '4519745213'),
+                                                                     ('Dmitriy', 'Manoshin', '89104568432', '4563789854');
 
 DROP TABLE IF EXISTS ACCOUNTS;
 
@@ -28,6 +29,10 @@ CREATE TABLE ACCOUNTS (
 INSERT INTO ACCOUNTS (account, balance, person_id) VALUES
                                               ('4058354637462435', 2000.45, 2),
                                               ('7356454734625343', 5500.00, 1),
+                                              ('6574635243567833', 6000.00, 3),
+                                              ('9876567865432321', 7000.00, 1),
+                                              ('2277556677443344', 9500.00, 3),
+                                              ('7788665544332211', 9500.00, 3),
                                               ('8765374652343847', 8000.75, 2);
 
 DROP TABLE IF EXISTS CARDS;
@@ -47,5 +52,7 @@ CREATE TABLE CARDS (
 INSERT INTO CARDS (number, state, month_until, day_until, account_id) VALUES
                                                ('2200283645372635', 'Active', 6, 12, 1),
                                                ('2300475634367493', 'Active', 7, 28, 2),
-                                               ('2400353784634236', 'Frozen', 12, 5, 3);
+                                               ('4400354676542233', 'Active', 7, 28, 3),
+                                               ('8899009988776655', 'Active', 7, 28, 5),
+                                               ('2400353784634236', 'Frozen', 12, 5, 4);
 

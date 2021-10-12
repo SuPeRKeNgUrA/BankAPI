@@ -17,6 +17,18 @@
           "monthUntil": 7,
           "dayUntil": 28
         }
+      },
+      {
+        "id": 4,
+        "account": "9876567865432321",
+        "balance": 7000.0,
+        "card": {
+          "id": 5,
+          "number": "2400353784634236",
+          "state": "Frozen",
+          "monthUntil": 12,
+          "dayUntil": 5
+        }
       }
     ]
   },
@@ -40,16 +52,10 @@
         }
       },
       {
-        "id": 3,
+        "id": 7,
         "account": "8765374652343847",
         "balance": 8000.75,
-        "card": {
-          "id": 3,
-          "number": "2400353784634236",
-          "state": "Frozen",
-          "monthUntil": 12,
-          "dayUntil": 5
-        }
+        "card": null
       }
     ]
   },
@@ -59,6 +65,45 @@
     "surname": "Zolotov",
     "phone": "89804624531",
     "passport": "4519745213",
+    "account": [
+      {
+        "id": 3,
+        "account": "6574635243567833",
+        "balance": 6000.0,
+        "card": {
+          "id": 3,
+          "number": "4400354676542233",
+          "state": "Active",
+          "monthUntil": 7,
+          "dayUntil": 28
+        }
+      },
+      {
+        "id": 5,
+        "account": "2277556677443344",
+        "balance": 9500.0,
+        "card": {
+          "id": 4,
+          "number": "8899009988776655",
+          "state": "Active",
+          "monthUntil": 7,
+          "dayUntil": 28
+        }
+      },
+      {
+        "id": 6,
+        "account": "7788665544332211",
+        "balance": 9500.0,
+        "card": null
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "name": "Dmitriy",
+    "surname": "Manoshin",
+    "phone": "89104568432",
+    "passport": "4563789854",
     "account": []
   }
 ]

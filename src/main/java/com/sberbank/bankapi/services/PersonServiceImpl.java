@@ -3,7 +3,6 @@ package com.sberbank.bankapi.services;
 import com.sberbank.bankapi.DAO.AccountDAO;
 import com.sberbank.bankapi.DAO.CardDAO;
 import com.sberbank.bankapi.DAO.PersonDAO;
-
 import com.sberbank.bankapi.entities.AccountEntity;
 import com.sberbank.bankapi.entities.CardEntity;
 import com.sberbank.bankapi.entities.PersonEntity;
@@ -13,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class PersonServiceImpl implements PersonService{
+public class PersonServiceImpl implements PersonService {
 
     private final PersonDAO personDAO;
     private final AccountDAO accountDAO;
@@ -91,11 +90,26 @@ public class PersonServiceImpl implements PersonService{
         AccountEntity accountEntity = cardEntity.getAccountEntity();
         accountEntity.addMoneyToBalance(sum);
         accountDAO.saveAccount(accountEntity);
-//        cardDAO.saveCard(cardEntity);
     }
 
     @Override
     public void deleteCard(String cardNumber) {
         cardDAO.deleteCard(cardNumber);
+    }
+
+    @Override
+    public List<AccountEntity> transferMoney(String accountNumberFrom, String accountNumberTo, double sum) {
+        AccountEntity accountFrom = getAccountByAccountNumber(accountNumberFrom);
+        AccountEntity accountTo = getAccountByAccountNumber(accountNumberTo);
+        List<AccountEntity> accountEntities = new ArrayList<>();
+        if (accountFrom.getBalance() >= sum) {
+            accountFrom.setBalance(accountFrom.getBalance() - sum);
+            accountTo.setBalance(accountTo.getBalance() + sum);
+            accountDAO.saveAccount(accountFrom);
+            accountDAO.saveAccount(accountTo);
+            accountEntities.add(accountFrom);
+            accountEntities.add(accountTo);
+        }
+        return accountEntities;
     }
 }

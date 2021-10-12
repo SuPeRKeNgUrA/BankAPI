@@ -48,13 +48,13 @@ public class PersonController {
     }
 
     @GetMapping("/getAllPersons")
-        public ResponseEntity<List<PersonEntity>> getAllPersons() {
+    public ResponseEntity<List<PersonEntity>> getAllPersons() {
         List<PersonEntity> persons = personService.getAllPersons();
         return new ResponseEntity<>(persons, HttpStatus.OK);
-        }
+    }
 
     @GetMapping("/getAccountByAccountNumber/{accountNumber}")
-        public ResponseEntity<AccountEntity> getAccountByAccountNumber(@PathVariable("accountNumber") String accountNumber) {
+    public ResponseEntity<AccountEntity> getAccountByAccountNumber(@PathVariable("accountNumber") String accountNumber) {
         AccountEntity accountEntity = personService.getAccountByAccountNumber(accountNumber);
         return new ResponseEntity<>(accountEntity, HttpStatus.OK);
     }
@@ -80,7 +80,7 @@ public class PersonController {
 
     @PostMapping(value = "/createCardForAccount/{accountNumber}")
     public ResponseEntity<CardEntity> createCardForAccount(@PathVariable("accountNumber") String accountNumber,
-                                  @RequestBody CardEntity cardEntity) {
+                                                           @RequestBody CardEntity cardEntity) {
         String cardNumber = cardEntity.getNumber();
         AccountEntity accountEntity = personService.getAccountByAccountNumber(accountNumber);
         if (accountEntity.getCard() != null) {
@@ -94,7 +94,7 @@ public class PersonController {
 
     @PostMapping(value = "/addMoneyToCard/{cardNumber}/{sum}")
     public ResponseEntity<AccountEntity> addMoneyToCard(@PathVariable("cardNumber") String cardNumber,
-                                                     @PathVariable("sum") double sum) {
+                                                        @PathVariable("sum") double sum) {
         personService.addMoneyToCard(cardNumber, sum);
         CardEntity cardEntity = personService.getCardByCardNumber(cardNumber);
         return new ResponseEntity<>(cardEntity.getAccountEntity(), HttpStatus.OK);
@@ -114,6 +114,16 @@ public class PersonController {
         return new ResponseEntity<>(accountEntity, HttpStatus.OK);
     }
 
+    @PostMapping(value = "/transferMoney/{accountFrom}/{accountTo}/{sum}")
+    public ResponseEntity<List<AccountEntity>> transferMoney(@PathVariable("accountFrom") String accountFrom,
+                                                             @PathVariable("accountTo") String accountTo,
+                                                             @PathVariable("sum") double sum) {
+        List<AccountEntity> refreshedAccounts = personService.transferMoney(accountFrom, accountTo, sum);
+        if (refreshedAccounts.size() == 0) {
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
+        }
+        return new ResponseEntity<>(refreshedAccounts, HttpStatus.OK);
+    }
 }
 
 

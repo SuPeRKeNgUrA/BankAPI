@@ -37,7 +37,7 @@ public class BankApiApplicationTests {
 
     @Test
     public void testGetPerson() throws Exception {
-        this.mockMvc.perform(get("/api/persons/getPerson/3"))
+        this.mockMvc.perform(get("/api/persons/getPerson/4"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().json(JSONParser.parseJsonToString("jsons/person.json")));
@@ -61,7 +61,7 @@ public class BankApiApplicationTests {
 
     @Test
     public void testGetAccountByAccountNumber() throws Exception {
-        this.mockMvc.perform(get("/api/persons/getAccountByAccountNumber/7356454734625343"))
+        this.mockMvc.perform(get("/api/persons/getAccountByAccountNumber/7788665544332211"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().json(JSONParser.parseJsonToString("jsons/accountByNumber.json")));
@@ -77,10 +77,10 @@ public class BankApiApplicationTests {
 
     @Test
     public void testGetBalance() throws Exception {
-        this.mockMvc.perform(get("/api/persons/getBalanceForCard/2200283645372635"))
+        this.mockMvc.perform(get("/api/persons/getBalanceForCard/8899009988776655"))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().string("2000.45"));
+                .andExpect(content().string("9500.0"));
     }
 
     @Test
@@ -90,12 +90,12 @@ public class BankApiApplicationTests {
                         .content("{\"name\":\"Ivan\",\"surname\":\"Ivanov\",\"phone\":\"89807776655\",\"passport\":\"4518999777\"}"))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().json("{\"id\":4,\"name\":\"Ivan\",\"surname\":\"Ivanov\",\"phone\":\"89807776655\",\"passport\":\"4518999777\"}"));
+                .andExpect(content().json("{\"id\":5,\"name\":\"Ivan\",\"surname\":\"Ivanov\",\"phone\":\"89807776655\",\"passport\":\"4518999777\"}"));
     }
 
     @Test
     public void testAddMoneyToCard() throws Exception {
-        this.mockMvc.perform(post("/api/persons/addMoneyToCard/2300475634367493/10000.00"))
+        this.mockMvc.perform(post("/api/persons/addMoneyToCard/4400354676542233/20000.00"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().json(JSONParser.parseJsonToString("jsons/addMoney.json")));
@@ -103,10 +103,18 @@ public class BankApiApplicationTests {
 
     @Test
     public void testDeleteCard() throws Exception {
-        this.mockMvc.perform(delete("/api/persons/deleteCard/2200283645372635"))
+        this.mockMvc.perform(delete("/api/persons/deleteCard/8899009988776655"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().json(JSONParser.parseJsonToString("jsons/deleteCard.json")));
+    }
+
+    @Test
+    public void testTransferMoney() throws Exception {
+        this.mockMvc.perform(post("/api/persons/transferMoney/4058354637462435/7356454734625343/1000.00"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().json(JSONParser.parseJsonToString("jsons/transferMoney.json")));
     }
 
 }

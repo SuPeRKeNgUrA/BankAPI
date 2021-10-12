@@ -20,5 +20,6 @@ public interface PersonService {
     public void addMoneyToCard(String cardNumber, double sum);
     public void deleteCard(String cardNumber);
     public double getBalanceForCard(String cardNumber);
+    public List<AccountEntity> transferMoney(String accountNumberFrom, String accountNumberTo, double sum);
 
 }
