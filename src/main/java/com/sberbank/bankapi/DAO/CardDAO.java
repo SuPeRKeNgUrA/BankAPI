@@ -5,11 +5,9 @@ import com.sberbank.bankapi.util.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
-@Component
+@Repository
 public class CardDAO {
 
     private final HibernateUtil hibernateUtil;
@@ -19,17 +17,19 @@ public class CardDAO {
     }
 
     public CardEntity getCardByAccountId(int accountId) {
-        Session session = hibernateUtil.getSessionFactory().openSession();
-        CardEntity cardEntity = session.get(CardEntity.class, accountId);
-        return cardEntity;
+        try (Session session = hibernateUtil.getSessionFactory().openSession()) {
+            CardEntity cardEntity = session.get(CardEntity.class, accountId);
+            return cardEntity;
+        }
     }
 
     public CardEntity getCardByCardNumber(String cardNumber) {
-        Session session = hibernateUtil.getSessionFactory().openSession();
-        Query<CardEntity> query = session.createQuery("from CardEntity where number = :requestNumber", CardEntity.class);
-        query.setParameter("requestNumber", cardNumber);
-        List<CardEntity> card = query.getResultList();
-        return card.get(0);
+        try (Session session = hibernateUtil.getSessionFactory().openSession()) {
+            Query<CardEntity> query = session.createQuery("from CardEntity where number = :requestNumber", CardEntity.class);
+            query.setParameter("requestNumber", cardNumber);
+            CardEntity card = query.getSingleResult();
+            return card;
+        }
     }
 
     public void saveCard(CardEntity cardEntity) {

@@ -5,11 +5,9 @@ import com.sberbank.bankapi.util.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
-@Component
+@Repository
 public class AccountDAO {
 
     private final HibernateUtil hibernateUtil;
@@ -19,17 +17,19 @@ public class AccountDAO {
     }
 
     public AccountEntity getAccount(int personId) {
-        Session session = hibernateUtil.getSessionFactory().openSession();
-        AccountEntity accountEntity = session.get(AccountEntity.class, personId);
-        return accountEntity;
+        try (Session session = hibernateUtil.getSessionFactory().openSession()) {
+            AccountEntity accountEntity = session.get(AccountEntity.class, personId);
+            return accountEntity;
+        }
     }
 
     public AccountEntity getAccountByAccountNumber(String accountNumber) {
-        Session session = hibernateUtil.getSessionFactory().openSession();
-        Query<AccountEntity> query = session.createQuery("from AccountEntity where account = :requestNumber", AccountEntity.class);
-        query.setParameter("requestNumber", accountNumber);
-        List<AccountEntity> account = query.getResultList();
-        return account.get(0);
+        try (Session session = hibernateUtil.getSessionFactory().openSession()) {
+            Query<AccountEntity> query = session.createQuery("from AccountEntity where account = :requestNumber", AccountEntity.class);
+            query.setParameter("requestNumber", accountNumber);
+            AccountEntity account = query.getSingleResult();
+            return account;
+        }
     }
 
     public void saveAccount(AccountEntity accountEntity) {

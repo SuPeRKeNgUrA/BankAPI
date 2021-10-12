@@ -46,7 +46,8 @@ CREATE TABLE CARDS (
                           account_id INT,
                           FOREIGN KEY (account_id) REFERENCES ACCOUNTS(id),
                           CHECK (month_until > 0 AND month_until < 13),
-                          CHECK (day_until > 0 AND day_until < 31)
+                          CHECK (day_until > 0 AND day_until < 31),
+                          UNIQUE INDEX (number)
 );
 
 INSERT INTO CARDS (number, state, month_until, day_until, account_id) VALUES
