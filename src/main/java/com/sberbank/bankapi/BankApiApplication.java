@@ -1,8 +1,7 @@
 package com.sberbank.bankapi;
 
 import com.sberbank.bankapi.DAO.PersonDAO;
-import com.sberbank.bankapi.services.PersonService;
-import com.sberbank.bankapi.util.HibernateUtil;
+import com.sberbank.bankapi.services.interfaces.PersonService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

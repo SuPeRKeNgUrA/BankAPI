@@ -3,7 +3,7 @@ package com.sberbank.bankapi.controller;
 import com.sberbank.bankapi.entities.AccountEntity;
 import com.sberbank.bankapi.entities.CardEntity;
 import com.sberbank.bankapi.entities.PersonEntity;
-import com.sberbank.bankapi.services.PersonService;
+import com.sberbank.bankapi.services.interfaces.PersonService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

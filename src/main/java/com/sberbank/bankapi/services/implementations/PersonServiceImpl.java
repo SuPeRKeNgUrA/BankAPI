@@ -1,4 +1,4 @@
-package com.sberbank.bankapi.services;
+package com.sberbank.bankapi.services.implementations;
 
 import com.sberbank.bankapi.DAO.AccountDAO;
 import com.sberbank.bankapi.DAO.CardDAO;
@@ -6,6 +6,7 @@ import com.sberbank.bankapi.DAO.PersonDAO;
 import com.sberbank.bankapi.entities.AccountEntity;
 import com.sberbank.bankapi.entities.CardEntity;
 import com.sberbank.bankapi.entities.PersonEntity;
+import com.sberbank.bankapi.services.interfaces.PersonService;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
