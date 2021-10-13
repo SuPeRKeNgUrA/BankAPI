@@ -1,42 +1,28 @@
 package com.sberbank.bankapi.controller;
 
+import com.sberbank.bankapi.entities.AccountEntity;
+import com.sberbank.bankapi.entities.CardEntity;
 import com.sberbank.bankapi.entities.PersonEntity;
 import com.sberbank.bankapi.services.interfaces.PersonService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.util.List;
-
-@RestController
-@RequestMapping("/api/persons")
+@Controller
 @AllArgsConstructor
+@RequestMapping("api/clients")
 public class PersonController {
 
     private final PersonService personService;
 
-    @GetMapping("/getPerson/{personId}")
-    public ResponseEntity<PersonEntity> getPersonById(@PathVariable("personId") int personId) {
-        PersonEntity personDto = personService.getPersonById(personId);
-        if (personDto == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity<>(personDto, HttpStatus.OK);
-    }
-
-    @GetMapping("/getAllPersons")
-    public ResponseEntity<List<PersonEntity>> getAllPersons() {
-        List<PersonEntity> persons = personService.getAllPersons();
-        return new ResponseEntity<>(persons, HttpStatus.OK);
-    }
-
-    @PostMapping(value = "/createPerson")
-    public ResponseEntity<PersonEntity> createPerson(@RequestBody PersonEntity personEntity) {
-        personService.createPerson(personEntity);
-        return new ResponseEntity<>(personEntity, HttpStatus.OK);
+    @PostMapping(value = "requestToCreateAccount/{passport}")
+    public ResponseEntity<String> requestToCreateAccount(@PathVariable("passport") String passport) {
+        personService.createRequestToCreateAccount(passport);
+        return new ResponseEntity<>("Заявка подана", HttpStatus.ACCEPTED);
     }
 
 }
-
-
