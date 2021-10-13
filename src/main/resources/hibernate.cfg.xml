@@ -11,7 +11,6 @@
     <property name="connection.password"></property>
     <property name="dialect">org.hibernate.dialect.H2Dialect</property>
 
-<!--    <mapping resource="Person.hbm.xml"/>-->
     <mapping class="com.sberbank.bankapi.entities.PersonEntity"/>
     <mapping class="com.sberbank.bankapi.entities.AccountEntity"/>
     <mapping class="com.sberbank.bankapi.entities.CardEntity"/>

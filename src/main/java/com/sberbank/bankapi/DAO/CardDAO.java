@@ -1,35 +1,40 @@
 package com.sberbank.bankapi.DAO;
 
+import com.sberbank.bankapi.entities.AccountEntity;
 import com.sberbank.bankapi.entities.CardEntity;
 import com.sberbank.bankapi.util.HibernateUtil;
+import lombok.AllArgsConstructor;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
-@Component
+@Repository
+@AllArgsConstructor
 public class CardDAO {
 
     private final HibernateUtil hibernateUtil;
-
-    public CardDAO(HibernateUtil hibernateUtil) {
-        this.hibernateUtil = hibernateUtil;
-    }
+    private final AccountDAO accountDAO;
 
     public CardEntity getCardByAccountId(int accountId) {
-        Session session = hibernateUtil.getSessionFactory().openSession();
-        CardEntity cardEntity = session.get(CardEntity.class, accountId);
-        return cardEntity;
+        try (Session session = hibernateUtil.getSessionFactory().openSession()) {
+            CardEntity cardEntity = session.get(CardEntity.class, accountId);
+            return cardEntity;
+        }
+    }
+
+    public CardEntity getCardByAccountNumber(String accountNumber) {
+            AccountEntity accountEntity = accountDAO.getAccountByAccountNumber(accountNumber);
+            return accountEntity.getCard();
     }
 
     public CardEntity getCardByCardNumber(String cardNumber) {
-        Session session = hibernateUtil.getSessionFactory().openSession();
-        Query<CardEntity> query = session.createQuery("from CardEntity where number = :requestNumber", CardEntity.class);
-        query.setParameter("requestNumber", cardNumber);
-        List<CardEntity> card = query.getResultList();
-        return card.get(0);
+        try (Session session = hibernateUtil.getSessionFactory().openSession()) {
+            Query<CardEntity> query = session.createQuery("from CardEntity where number = :requestNumber", CardEntity.class);
+            query.setParameter("requestNumber", cardNumber);
+            CardEntity card = query.getSingleResult();
+            return card;
+        }
     }
 
     public void saveCard(CardEntity cardEntity) {

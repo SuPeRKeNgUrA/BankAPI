@@ -6,14 +6,15 @@ CREATE TABLE PERSONS (
                          surname VARCHAR(250) NOT NULL,
                          phone VARCHAR(11) DEFAULT NULL,
                          passport VARCHAR(10) NOT NULL,
+                         requestAccount INT DEFAULT NULL,
                          PRIMARY KEY (id)
 );
 
-INSERT INTO PERSONS (name, surname, phone, passport) VALUES
-                                                                     ('Denis', 'Makarov', '89150675376', '5673673567'),
-                                                                     ('Ivan', 'Panin', '89104568765', '4518978634'),
-                                                                     ('Maks', 'Zolotov', '89804624531', '4519745213'),
-                                                                     ('Dmitriy', 'Manoshin', '89104568432', '4563789854');
+INSERT INTO PERSONS (name, surname, phone, passport, requestAccount) VALUES
+                                                                     ('Denis', 'Makarov', '89150675376', '5673673567', 0),
+                                                                     ('Ivan', 'Panin', '89104568765', '4518978634', 0),
+                                                                     ('Maks', 'Zolotov', '89804624531', '4519745213', 0),
+                                                                     ('Dmitriy', 'Manoshin', '89104568432', '4563789854', 0);
 
 DROP TABLE IF EXISTS ACCOUNTS;
 
@@ -28,9 +29,9 @@ CREATE TABLE ACCOUNTS (
 
 INSERT INTO ACCOUNTS (account, balance, person_id) VALUES
                                               ('4058354637462435', 2000.45, 2),
-                                              ('7356454734625343', 5500.00, 1),
+                                              ('7356454734625343', 5500.00, 2),
                                               ('6574635243567833', 6000.00, 3),
-                                              ('9876567865432321', 7000.00, 1),
+                                              ('9876567865432321', 7000.00, 2),
                                               ('2277556677443344', 9500.00, 3),
                                               ('7788665544332211', 9500.00, 3),
                                               ('8765374652343847', 8000.75, 2);
@@ -54,5 +55,5 @@ INSERT INTO CARDS (number, state, month_until, day_until, account_id) VALUES
                                                ('2300475634367493', 'Active', 7, 28, 2),
                                                ('4400354676542233', 'Active', 7, 28, 3),
                                                ('8899009988776655', 'Active', 7, 28, 5),
-                                               ('2400353784634236', 'Frozen', 12, 5, 4);
+                                               ('2400353784634236', 'Frozen', 12, 5, 6);
 

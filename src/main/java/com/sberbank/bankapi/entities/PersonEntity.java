@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -37,8 +39,12 @@ public class PersonEntity {
 
     @JsonManagedReference
     @OneToMany(mappedBy = "personEntity")
+    @Fetch(FetchMode.JOIN)
     @Column(name = "account")
     private List<AccountEntity> account;
+
+    @Column(name = "requestAccount")
+    private int requestAccount;
 
     public void createAccount(AccountEntity accountEntity) {
         if (account == null) {
