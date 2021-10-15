@@ -1,8 +1,39 @@
 {
-  "id": 4,
-  "name": "Dmitriy",
-  "surname": "Manoshin",
-  "phone": "89104568432",
-  "passport": "4563789854",
-  "account": []
+  "id": 1,
+  "name": "Denis",
+  "surname": "Makarov",
+  "phone": "89150675376",
+  "passport": "5673673567",
+  "account": [
+    {
+      "id": 1,
+      "account": "4058354637462435",
+      "balance": 2000.45,
+      "card": {
+        "id": 1,
+        "number": "2200283645372635",
+        "state": "Active",
+        "monthUntil": 6,
+        "yearUntil": 25
+      },
+      "requestCard": 0,
+      "confirmedRequest": 0
+    },
+    {
+      "id": 2,
+      "account": "7356454734625343",
+      "balance": 5500.0,
+      "card": {
+        "id": 2,
+        "number": "2300475634367493",
+        "state": "Active",
+        "monthUntil": 7,
+        "yearUntil": 28
+      },
+      "requestCard": 0,
+      "confirmedRequest": 0
+    }
+  ],
+  "requestAccount": 0,
+  "confirmedRequest": 0
 }

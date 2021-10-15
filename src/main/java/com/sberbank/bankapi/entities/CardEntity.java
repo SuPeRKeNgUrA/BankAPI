@@ -35,7 +35,7 @@ public class CardEntity {
     @Column(name = "month_until")
     private int monthUntil;
 
-    @Column(name = "day_until")
-    private int dayUntil;
+    @Column(name = "year_until")
+    private int yearUntil;
 
 }

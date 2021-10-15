@@ -18,5 +18,7 @@ public class AccountDTO {
     private PersonEntity personEntity;
     private double balance;
     private CardEntity card;
+    private int requestCard;
+    private int confirmedRequest;
 
 }

@@ -21,39 +21,6 @@ public class AccountServiceImpl implements AccountService {
     private final PersonService personService;
     private final AccountDAO accountDAO;
 
-//    @Override
-//    public List<AccountEntity> getAccountsByPersonId(int personId) {
-//        return personDAO.getPerson(personId).getAccount();
-//    }
-//
-//    @Override
-//    public AccountEntity getAccountByAccountNumber(String accountNumber) {
-//        return accountDAO.getAccountByAccountNumber(accountNumber);
-//    }
-//
-//    @Override
-//    public void createNewAccount(int personId, AccountEntity accountEntity) {
-//        PersonEntity personEntity = personService.getPersonById(personId);
-//        personEntity.createAccount(accountEntity);
-//        accountDAO.saveAccount(accountEntity);
-//    }
-//
-//    @Override
-//    public List<AccountEntity> transferMoney(String accountNumberFrom, String accountNumberTo, double sum) {
-//        AccountEntity accountFrom = getAccountByAccountNumber(accountNumberFrom);
-//        AccountEntity accountTo = getAccountByAccountNumber(accountNumberTo);
-//        List<AccountEntity> accountEntities = new ArrayList<>();
-//        if (accountFrom.getBalance() >= sum) {
-//            accountFrom.setBalance(accountFrom.getBalance() - sum);
-//            accountTo.setBalance(accountTo.getBalance() + sum);
-//            accountDAO.saveAccount(accountFrom);
-//            accountDAO.saveAccount(accountTo);
-//            accountEntities.add(accountFrom);
-//            accountEntities.add(accountTo);
-//        }
-//        return accountEntities;
-//    }
-
     @Override
     public List<AccountDTO> getAccountsByPersonId(int personId) {
         List<AccountDTO> accounts = new ArrayList<>();
@@ -74,11 +41,18 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public AccountDTO createNewAccount(int personId, AccountEntity accountEntity) {
+    public boolean createNewAccount(int personId, AccountEntity accountEntity) {
         PersonEntity personEntity = personService.getPersonEntityById(personId);
-        personEntity.createAccount(accountEntity);
-        accountDAO.saveAccount(accountEntity);
-        return transferToAccountDTO(accountEntity);
+        if ((personEntity.getRequestAccount() == personEntity.getConfirmedRequest()) &&
+                personEntity.getRequestAccount() != 0) {
+            personEntity.createAccount(accountEntity);
+            personEntity.setRequestAccount(0);
+            personEntity.setConfirmedRequest(0);
+            accountDAO.saveAccount(accountEntity);
+            personDAO.savePerson(personEntity);
+            return true;
+        }
+        return false;
     }
 
     @Override
@@ -98,6 +72,38 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
+    public boolean createRequestToCreateCard(String accountNumber) {
+        AccountEntity accountEntity = accountDAO.getAccountByAccountNumber(accountNumber);
+        if (accountEntity.getRequestCard() == 0) {
+            accountEntity.setRequestCard(accountEntity.getRequestCard() + 1);
+            accountDAO.saveAccount(accountEntity);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public List<AccountDTO> checkCardsRequests() {
+        List<AccountEntity> accountEntities = accountDAO.getAllAccounts();
+        List<AccountDTO> accountsWithRequests = new ArrayList<>();
+        for (AccountEntity account : accountEntities) {
+            if (account.getRequestCard() != 0) {
+                accountsWithRequests.add(transferToAccountDTO(account));
+            }
+        }
+        return accountsWithRequests;
+    }
+
+    @Override
+    public void confirmRequestToCreateCard(String accountNumber) {
+        AccountEntity accountEntity = accountDAO.getAccountByAccountNumber(accountNumber);
+        if (accountEntity.getRequestCard() > accountEntity.getConfirmedRequest()) {
+            accountEntity.setConfirmedRequest(accountEntity.getRequestCard());
+        }
+        accountDAO.saveAccount(accountEntity);
+    }
+
+    @Override
     public AccountDTO transferToAccountDTO(AccountEntity accountEntity) {
         return AccountDTO.builder()
                 .id(accountEntity.getId())
@@ -105,6 +111,9 @@ public class AccountServiceImpl implements AccountService {
                 .personEntity(accountEntity.getPersonEntity())
                 .balance(accountEntity.getBalance())
                 .card(accountEntity.getCard())
+                .requestCard(accountEntity.getRequestCard())
+                .confirmedRequest(accountEntity.getConfirmedRequest())
                 .build();
     }
+
 }

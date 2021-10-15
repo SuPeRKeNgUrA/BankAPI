@@ -21,5 +21,6 @@ public class PersonDTO {
     private String passport;
     private List<AccountEntity> account;
     private int requestAccount;
+    private int confirmedRequest;
 
 }

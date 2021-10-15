@@ -1,17 +1,13 @@
 package com.sberbank.bankapi;
 
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class BankApiApplication implements CommandLineRunner {
+public class BankApiApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(BankApiApplication.class, args);
     }
 
-    @Override
-    public void run(String... args) throws Exception {
-    }
 }

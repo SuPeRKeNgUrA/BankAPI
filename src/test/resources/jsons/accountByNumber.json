@@ -1,6 +1,49 @@
 {
-  "id": 6,
-  "account": "7788665544332211",
-  "balance": 9500.0,
-  "card": null
+  "id": 10,
+  "account": "7788654324567845",
+  "personEntity": {
+    "id": 5,
+    "name": "Dmitriy",
+    "surname": "Manoshin",
+    "phone": "89104568432",
+    "passport": "4563789854",
+    "account": [
+      {
+        "id": 8,
+        "account": "8765374652343848",
+        "balance": 8000.75,
+        "card": {
+          "id": 8,
+          "number": "8599009988776657",
+          "state": "Active",
+          "monthUntil": 7,
+          "yearUntil": 28
+        },
+        "requestCard": 0,
+        "confirmedRequest": 0
+      },
+      {
+        "id": 9,
+        "account": "8765374652343849",
+        "balance": 8000.75,
+        "card": null,
+        "requestCard": 0,
+        "confirmedRequest": 0
+      },
+      {
+        "id": 10,
+        "account": "7788654324567845",
+        "balance": 10000.75,
+        "card": null,
+        "requestCard": 0,
+        "confirmedRequest": 0
+      }
+    ],
+    "requestAccount": 0,
+    "confirmedRequest": 0
+  },
+  "balance": 10000.75,
+  "card": null,
+  "requestCard": 0,
+  "confirmedRequest": 0
 }

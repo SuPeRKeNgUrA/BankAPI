@@ -52,10 +52,16 @@ public class CardServiceImpl implements CardService {
     }
 
     @Override
-    public CardDTO createNewCard(AccountEntity accountEntity, CardEntity cardEntity) {
-        accountEntity.createCard(cardEntity);
-        cardDAO.saveCard(cardEntity);
-        return transferToCardDTO(cardEntity);
+    public boolean createNewCard(AccountEntity accountEntity, CardEntity cardEntity) {
+        if (accountEntity.getRequestCard() == accountEntity.getConfirmedRequest()) {
+            accountEntity.createCard(cardEntity);
+            accountEntity.setRequestCard(0);
+            accountEntity.setConfirmedRequest(0);
+            cardDAO.saveCard(cardEntity);
+            accountDAO.saveAccount(accountEntity);
+            return true;
+        }
+        return false;
     }
 
     @Override
@@ -82,7 +88,7 @@ public class CardServiceImpl implements CardService {
                 .number(cardEntity.getNumber())
                 .state(cardEntity.getState())
                 .monthUntil(cardEntity.getMonthUntil())
-                .dayUntil(cardEntity.getDayUntil())
+                .yearUntil(cardEntity.getYearUntil())
                 .build();
     }
 }

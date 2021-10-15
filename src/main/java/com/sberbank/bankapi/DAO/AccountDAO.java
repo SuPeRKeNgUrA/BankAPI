@@ -7,6 +7,8 @@ import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public class AccountDAO {
 
@@ -20,6 +22,14 @@ public class AccountDAO {
         try (Session session = hibernateUtil.getSessionFactory().openSession()) {
             AccountEntity accountEntity = session.get(AccountEntity.class, personId);
             return accountEntity;
+        }
+    }
+
+    public List<AccountEntity> getAllAccounts() {
+        try (Session session = hibernateUtil.getSessionFactory().openSession()) {
+            Query<AccountEntity> query = session.createQuery("from AccountEntity", AccountEntity.class);
+            List<AccountEntity> accounts = query.getResultList();
+            return accounts;
         }
     }
 

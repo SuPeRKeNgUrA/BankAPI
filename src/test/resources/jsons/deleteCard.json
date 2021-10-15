@@ -1,6 +1,41 @@
 {
-  "id": 5,
-  "account": "2277556677443344",
+  "id": 6,
+  "account": "7788665544332211",
+  "personEntity": {
+    "id": 3,
+    "name": "Maks",
+    "surname": "Zolotov",
+    "phone": "89804624531",
+    "passport": "4519745213",
+    "account": [
+      {
+        "id": 5,
+        "account": "2277556677443344",
+        "balance": 8500.0,
+        "card": {
+          "id": 5,
+          "number": "2288776655667744",
+          "state": "Active",
+          "monthUntil": 7,
+          "yearUntil": 28
+        },
+        "requestCard": 0,
+        "confirmedRequest": 0
+      },
+      {
+        "id": 6,
+        "account": "7788665544332211",
+        "balance": 9500.0,
+        "card": null,
+        "requestCard": 0,
+        "confirmedRequest": 0
+      }
+    ],
+    "requestAccount": 0,
+    "confirmedRequest": 0
+  },
   "balance": 9500.0,
-  "card": null
+  "card": null,
+  "requestCard": 0,
+  "confirmedRequest": 0
 }

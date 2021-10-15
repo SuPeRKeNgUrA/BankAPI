@@ -17,6 +17,6 @@ public class CardDTO {
     private String number;
     private String state;
     private int monthUntil;
-    private int dayUntil;
+    private int yearUntil;
 
 }

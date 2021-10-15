@@ -37,6 +37,12 @@ public class AccountEntity {
     @OneToOne(mappedBy = "accountEntity")
     private CardEntity card;
 
+    @Column(name = "requestCard")
+    private int requestCard;
+
+    @Column(name = "confirmedRequest")
+    private int confirmedRequest;
+
     public void addMoneyToBalance(double sum) {
         double sumForNow = this.getBalance();
         this.setBalance(sumForNow + sum);

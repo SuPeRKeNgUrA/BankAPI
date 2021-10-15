@@ -46,6 +46,9 @@ public class PersonEntity {
     @Column(name = "requestAccount")
     private int requestAccount;
 
+    @Column(name = "confirmedRequest")
+    private int confirmedRequest;
+
     public void createAccount(AccountEntity accountEntity) {
         if (account == null) {
             account = new ArrayList<>();

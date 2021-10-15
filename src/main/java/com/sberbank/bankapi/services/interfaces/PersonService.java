@@ -5,13 +5,10 @@ import com.sberbank.bankapi.entities.PersonEntity;
 
 import java.util.List;
 
+/**
+ * Сервис для работы с данными о клиентах, запросах об открытии счета и подтверждения этой операции со стороны банка
+ */
 public interface PersonService {
-
-//    PersonEntity getPersonById(int personId);
-//
-//    void createPerson(PersonEntity personEntity);
-//
-//    List<PersonEntity> getAllPersons();
 
     PersonDTO getPersonById(int personId);
 
@@ -21,10 +18,12 @@ public interface PersonService {
 
     List<PersonDTO> getAllPersons();
 
+    boolean createRequestToCreateAccount(String passport);
+
+    List<PersonDTO> checkAccountsRequests();
+
+    void confirmRequestToCreateAccount(String passport);
+
     PersonDTO transferToPersonDTO(PersonEntity personEntity);
-
-    void createRequestToCreateAccount(String passport);
-
-    void checkRequestsAndConfirm();
 
 }

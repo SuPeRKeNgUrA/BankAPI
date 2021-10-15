@@ -10,17 +10,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-
         auth.inMemoryAuthentication()
-                .withUser("user").password("{noop}password").roles("USER")
-                .and()
                 .withUser("manager").password("{noop}password").roles("MANAGER");
-
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-
         http
                 .httpBasic()
                 .and()
@@ -29,6 +24,5 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .csrf().disable()
                 .formLogin().disable();
-
     }
 }

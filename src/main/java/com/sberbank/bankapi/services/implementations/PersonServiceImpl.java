@@ -16,21 +16,6 @@ public class PersonServiceImpl implements PersonService {
 
     private final PersonDAO personDAO;
 
-//    @Override
-//    public PersonEntity getPersonById(int personId) {
-//        return personDAO.getPerson(personId);
-//    }
-//
-//    @Override
-//    public List<PersonEntity> getAllPersons() {
-//        return personDAO.getAllPersons();
-//    }
-//
-//    @Override
-//    public void createPerson(PersonEntity personEntity) {
-//        personDAO.savePerson(personEntity);
-//    }
-
     @Override
     public PersonDTO getPersonById(int personId) {
         return transferToPersonDTO(personDAO.getPerson(personId));
@@ -57,15 +42,35 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
-    public void createRequestToCreateAccount(String passport) {
+    public boolean createRequestToCreateAccount(String passport) {
         PersonEntity personEntity = personDAO.getPersonByPassport(passport);
-        personEntity.setRequestAccount(personEntity.getRequestAccount() + 1);
-        personDAO.updatePerson(personEntity);
+        if (personEntity.getRequestAccount() == 0) {
+            personEntity.setRequestAccount(personEntity.getRequestAccount() + 1);
+            personDAO.savePerson(personEntity);
+            return true;
+        }
+        return false;
     }
 
     @Override
-    public void checkRequestsAndConfirm() {
+    public List<PersonDTO> checkAccountsRequests() {
+        List<PersonEntity> personEntities = personDAO.getAllPersons();
+        List<PersonDTO> personsWithRequests = new ArrayList<>();
+        for (PersonEntity person : personEntities) {
+            if (person.getRequestAccount() != 0) {
+                personsWithRequests.add(transferToPersonDTO(person));
+            }
+        }
+        return personsWithRequests;
+    }
 
+    @Override
+    public void confirmRequestToCreateAccount(String passport) {
+        PersonEntity personEntity = personDAO.getPersonByPassport(passport);
+        if (personEntity.getRequestAccount() > personEntity.getConfirmedRequest()) {
+            personEntity.setConfirmedRequest(personEntity.getRequestAccount());
+        }
+        personDAO.savePerson(personEntity);
     }
 
     @Override
@@ -78,6 +83,7 @@ public class PersonServiceImpl implements PersonService {
                 .passport(personEntity.getPassport())
                 .account(personEntity.getAccount())
                 .requestAccount(personEntity.getRequestAccount())
+                .confirmedRequest(personEntity.getConfirmedRequest())
                 .build();
     }
 }

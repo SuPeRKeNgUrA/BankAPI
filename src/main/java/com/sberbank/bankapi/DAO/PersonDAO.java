@@ -1,6 +1,5 @@
 package com.sberbank.bankapi.DAO;
 
-import com.sberbank.bankapi.entities.AccountEntity;
 import com.sberbank.bankapi.entities.PersonEntity;
 import com.sberbank.bankapi.util.HibernateUtil;
 import lombok.AllArgsConstructor;
@@ -45,21 +44,7 @@ public class PersonDAO {
         Transaction tx = null;
         try (Session session = hibernateUtil.getSessionFactory().openSession();) {
             tx = session.beginTransaction();
-            session.save(personEntity);
-            session.getTransaction().commit();
-        } catch (Exception ex) {
-            if (tx != null) {
-                tx.rollback();
-            }
-            throw ex;
-        }
-    }
-
-    public void updatePerson(PersonEntity personEntity) {
-        Transaction tx = null;
-        try (Session session = hibernateUtil.getSessionFactory().openSession();) {
-            tx = session.beginTransaction();
-            session.update(personEntity);
+            session.saveOrUpdate(personEntity);
             session.getTransaction().commit();
         } catch (Exception ex) {
             if (tx != null) {
