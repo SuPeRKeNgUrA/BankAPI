@@ -4,7 +4,6 @@ import com.sberbank.bankapi.controller.AccountController;
 import com.sberbank.bankapi.controller.CardController;
 import com.sberbank.bankapi.controller.PersonController;
 import com.sberbank.bankapi.utils.JSONParser;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,16 +11,12 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MockMvcBuilder;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -49,32 +44,24 @@ public class BankApiApplicationTests {
     @Autowired
     WebApplicationContext webApplicationContext;
 
-//    @Before
-//    public void setup() {
-//        mockMvc = MockMvcBuilders
-//                .webAppContextSetup(webApplicationContext)
-//                .apply(springSecurity())
-//                .build();
-//    }
-
     @Test
-    public void testPersonControllerIsPresent() throws  Exception {
+    public void testPersonControllerIsPresent() throws Exception {
         assertThat(personController).isNotNull();
     }
 
     @Test
-    public void testAccountControllerIsPresent() throws  Exception {
+    public void testAccountControllerIsPresent() throws Exception {
         assertThat(accountController).isNotNull();
     }
 
     @Test
-    public void testCardControllerIsPresent() throws  Exception {
+    public void testCardControllerIsPresent() throws Exception {
         assertThat(cardController).isNotNull();
     }
 
     @Test
     public void testGetPerson() throws Exception {
-        this.mockMvc.perform(get("/api/manager/getPerson/1"))
+        this.mockMvc.perform(get("/api/manager/getPerson/2"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().json(JSONParser.parseJsonToString("jsons/person.json")));
@@ -152,6 +139,22 @@ public class BankApiApplicationTests {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().json(JSONParser.parseJsonToString("jsons/transferMoney.json")));
+    }
+
+    @Test
+    public void testRequestToCreateAccount() throws Exception {
+        this.mockMvc.perform(post("/api/clients/addRequestToCreateAccount/5673673567"))
+                .andDo(print())
+                .andExpect(status().isAccepted())
+                .andExpect(content().json("{\"message\":\"Заявка на открытие счета подана\"}"));
+    }
+
+    @Test
+    public void testConfirmRequestToCreateAccount() throws Exception {
+        this.mockMvc.perform(post("/api/manager/confirmRequestToCreateAccount/5673673567"))
+                .andDo(print())
+                .andExpect(status().isAccepted())
+                .andExpect(content().json("{\"message\":\"Заявка на открытие счета подтверждена\"}"));
     }
 
 }
