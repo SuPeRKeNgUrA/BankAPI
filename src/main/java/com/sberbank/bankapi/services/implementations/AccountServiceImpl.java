@@ -3,6 +3,7 @@ package com.sberbank.bankapi.services.implementations;
 import com.sberbank.bankapi.DAO.AccountDAO;
 import com.sberbank.bankapi.DAO.PersonDAO;
 import com.sberbank.bankapi.DTO.AccountDTO;
+import com.sberbank.bankapi.DTO.MessageDTO;
 import com.sberbank.bankapi.entities.AccountEntity;
 import com.sberbank.bankapi.entities.PersonEntity;
 import com.sberbank.bankapi.services.interfaces.AccountService;
@@ -11,7 +12,9 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @AllArgsConstructor
@@ -41,8 +44,9 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public boolean createNewAccount(int personId, AccountEntity accountEntity) {
+    public Map<Boolean, MessageDTO> createNewAccount(int personId, AccountEntity accountEntity) {
         PersonEntity personEntity = personService.getPersonEntityById(personId);
+        Map<Boolean, MessageDTO> message = new HashMap<>();
         if ((personEntity.getRequestAccount() == personEntity.getConfirmedRequest()) &&
                 personEntity.getRequestAccount() != 0) {
             personEntity.createAccount(accountEntity);
@@ -50,9 +54,11 @@ public class AccountServiceImpl implements AccountService {
             personEntity.setConfirmedRequest(0);
             accountDAO.saveAccount(accountEntity);
             personDAO.savePerson(personEntity);
-            return true;
+            message.put(true, MessageDTO.builder().message("Счет открыт").build());
+        } else {
+            message.put(false, MessageDTO.builder().message("Нет заявок на открытие счета или заявка еще не подтверждена").build());
         }
-        return false;
+        return message;
     }
 
     @Override
@@ -72,14 +78,17 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public boolean createRequestToCreateCard(String accountNumber) {
+    public Map<Boolean, MessageDTO> createRequestToCreateCard(String accountNumber) {
         AccountEntity accountEntity = accountDAO.getAccountByAccountNumber(accountNumber);
+        Map<Boolean, MessageDTO> message = new HashMap<>();
         if (accountEntity.getRequestCard() == 0) {
             accountEntity.setRequestCard(accountEntity.getRequestCard() + 1);
             accountDAO.saveAccount(accountEntity);
-            return true;
+            message.put(true, MessageDTO.builder().message("Заявка на выпуск карты подана").build());
+        } else {
+            message.put(true, MessageDTO.builder().message("К данному аккаунту уже привязана карта или заявка на открытие карты уже подана").build());
         }
-        return false;
+        return message;
     }
 
     @Override
@@ -95,12 +104,13 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public void confirmRequestToCreateCard(String accountNumber) {
+    public MessageDTO confirmRequestToCreateCard(String accountNumber) {
         AccountEntity accountEntity = accountDAO.getAccountByAccountNumber(accountNumber);
         if (accountEntity.getRequestCard() > accountEntity.getConfirmedRequest()) {
             accountEntity.setConfirmedRequest(accountEntity.getRequestCard());
         }
         accountDAO.saveAccount(accountEntity);
+        return MessageDTO.builder().message("Заявка на выпуск карты подтверждена").build();
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.sberbank.bankapi.controller;
 
 import com.sberbank.bankapi.DTO.AccountDTO;
+import com.sberbank.bankapi.DTO.MessageDTO;
 import com.sberbank.bankapi.entities.AccountEntity;
 import com.sberbank.bankapi.services.interfaces.AccountService;
 import com.sberbank.bankapi.services.interfaces.PersonService;
@@ -10,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @AllArgsConstructor
@@ -35,13 +37,13 @@ public class AccountController {
     }
 
     @PostMapping(value = "/manager/createAccountForPerson/{personId}")
-    public ResponseEntity<String> createAccount(@PathVariable("personId") int personId,
+    public ResponseEntity<MessageDTO> createAccount(@PathVariable("personId") int personId,
                                                 @RequestBody AccountEntity accountEntity) {
-        boolean isCreated = accountService.createNewAccount(personId, accountEntity);
-        if (isCreated) {
-            return new ResponseEntity<>("Счет открыт", HttpStatus.OK);
+        Map<Boolean, MessageDTO> isCreated = accountService.createNewAccount(personId, accountEntity);
+        if (isCreated.containsKey(true)) {
+            return new ResponseEntity<>(isCreated.get(true), HttpStatus.OK);
         } else {
-            return new ResponseEntity<>("Нет заявок на открытие счета или заявка еще не подтверждена", HttpStatus.CONFLICT);
+            return new ResponseEntity<>(isCreated.get(false), HttpStatus.CONFLICT);
         }
     }
 
@@ -63,12 +65,12 @@ public class AccountController {
     }
 
     @PostMapping(value = "clients/requestToCreateAccount/{accountNumber}")
-    public ResponseEntity<String> requestToCreateCard(@PathVariable("accountNumber") String accountNumber) {
-        boolean response = accountService.createRequestToCreateCard(accountNumber);
-        if (response) {
-            return new ResponseEntity<>("Заявка на выпуск карты подана", HttpStatus.ACCEPTED);
+    public ResponseEntity<MessageDTO> requestToCreateCard(@PathVariable("accountNumber") String accountNumber) {
+        Map<Boolean, MessageDTO> response = accountService.createRequestToCreateCard(accountNumber);
+        if (response.containsKey(true)) {
+            return new ResponseEntity<>(response.get(true), HttpStatus.ACCEPTED);
         } else {
-            return new ResponseEntity<>("К данному аккаунту уже привязана карта или заявка на открытие карты уже подана", HttpStatus.CONFLICT);
+            return new ResponseEntity<>(response.get(false), HttpStatus.CONFLICT);
         }
     }
 
@@ -79,9 +81,9 @@ public class AccountController {
     }
 
     @PostMapping(value = "/manager/confirmRequestToCreateCard/{accountNumber}")
-    public ResponseEntity<String> confirmRequestToCreateCard(@PathVariable("accountNumber") String accountNumber) {
-        accountService.confirmRequestToCreateCard(accountNumber);
-        return new ResponseEntity("Заявка на выпуск карты подтверждена", HttpStatus.ACCEPTED);
+    public ResponseEntity<MessageDTO> confirmRequestToCreateCard(@PathVariable("accountNumber") String accountNumber) {
+        MessageDTO message = accountService.confirmRequestToCreateCard(accountNumber);
+        return new ResponseEntity<>(message, HttpStatus.ACCEPTED);
     }
 
 }

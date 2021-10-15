@@ -1,9 +1,11 @@
 package com.sberbank.bankapi.services.interfaces;
 
 import com.sberbank.bankapi.DTO.AccountDTO;
+import com.sberbank.bankapi.DTO.MessageDTO;
 import com.sberbank.bankapi.entities.AccountEntity;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Сервис для получения данных о счетах клиентов банка, запросах о выпуске карты и подтверждения этой операции со стороны банка
@@ -16,15 +18,15 @@ public interface AccountService {
 
     AccountEntity getAccountEntityByAccountNumber(String accountNumber);
 
-    boolean createNewAccount(int personId, AccountEntity accountEntity);
+    Map<Boolean, MessageDTO> createNewAccount(int personId, AccountEntity accountEntity);
 
     List<AccountDTO> transferMoney(String accountNumberFrom, String accountNumberTo, double sum);
 
-    boolean createRequestToCreateCard(String accountNumber);
+    Map<Boolean, MessageDTO> createRequestToCreateCard(String accountNumber);
 
     List<AccountDTO> checkCardsRequests();
 
-    void confirmRequestToCreateCard(String accountNumber);
+    MessageDTO confirmRequestToCreateCard(String accountNumber);
 
     AccountDTO transferToAccountDTO(AccountEntity accountEntity);
 

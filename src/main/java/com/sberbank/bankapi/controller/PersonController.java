@@ -1,5 +1,6 @@
 package com.sberbank.bankapi.controller;
 
+import com.sberbank.bankapi.DTO.MessageDTO;
 import com.sberbank.bankapi.DTO.PersonDTO;
 import com.sberbank.bankapi.entities.PersonEntity;
 import com.sberbank.bankapi.services.interfaces.PersonService;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @AllArgsConstructor
@@ -40,12 +42,12 @@ public class PersonController {
     }
 
     @PostMapping(value = "/clients/addRequestToCreateAccount/{passport}")
-    public ResponseEntity<String> requestToCreateAccount(@PathVariable("passport") String passport) {
-        boolean isCreated = personService.createRequestToCreateAccount(passport);
-        if (isCreated) {
-            return new ResponseEntity<>("Заявка на открытие счета подана", HttpStatus.ACCEPTED);
+    public ResponseEntity<MessageDTO> requestToCreateAccount(@PathVariable("passport") String passport) {
+        Map<Boolean, MessageDTO> isCreated = personService.createRequestToCreateAccount(passport);
+        if (isCreated.containsKey(true)) {
+            return new ResponseEntity<>(isCreated.get(true), HttpStatus.ACCEPTED);
         } else {
-            return new ResponseEntity<>("Заявка уже подана", HttpStatus.CONFLICT);
+            return new ResponseEntity<>(isCreated.get(false), HttpStatus.CONFLICT);
         }
     }
 
@@ -56,9 +58,9 @@ public class PersonController {
     }
 
     @PostMapping(value = "/manager/confirmRequestToCreateAccount/{passport}")
-    public ResponseEntity<String> confirmRequestToCreateAccount(@PathVariable("passport") String passport) {
-        personService.confirmRequestToCreateAccount(passport);
-        return new ResponseEntity<>("Заявка на открытие счета подтверждена", HttpStatus.ACCEPTED);
+    public ResponseEntity<MessageDTO> confirmRequestToCreateAccount(@PathVariable("passport") String passport) {
+        MessageDTO message = personService.confirmRequestToCreateAccount(passport);
+        return new ResponseEntity<>(message, HttpStatus.ACCEPTED);
     }
 
 }

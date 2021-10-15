@@ -2,6 +2,7 @@ package com.sberbank.bankapi.controller;
 
 import com.sberbank.bankapi.DTO.AccountDTO;
 import com.sberbank.bankapi.DTO.CardDTO;
+import com.sberbank.bankapi.DTO.MessageDTO;
 import com.sberbank.bankapi.entities.AccountEntity;
 import com.sberbank.bankapi.entities.CardEntity;
 import com.sberbank.bankapi.services.interfaces.AccountService;
@@ -13,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @AllArgsConstructor
@@ -39,19 +41,18 @@ public class CardController {
     }
 
     @PostMapping(value = "/manager/createCardForAccount/{accountNumber}")
-    public ResponseEntity<String> createCardForAccount(@PathVariable("accountNumber") String accountNumber,
+    public ResponseEntity<MessageDTO> createCardForAccount(@PathVariable("accountNumber") String accountNumber,
                                                            @RequestBody CardEntity cardEntity) {
         AccountEntity accountEntity = accountService.getAccountEntityByAccountNumber(accountNumber);
         if (accountEntity.getCard() != null) {
             return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
         cardEntity.setAccountEntity(accountEntity);
-        boolean isCreated = cardService.createNewCard(accountEntity, cardEntity);
-
-        if (isCreated) {
-            return new ResponseEntity<>("Карта выпущена открыт", HttpStatus.OK);
+        Map<Boolean, MessageDTO> isCreated = cardService.createNewCard(accountEntity, cardEntity);
+        if (isCreated.containsKey(true)) {
+            return new ResponseEntity<>(isCreated.get(true), HttpStatus.OK);
         } else {
-            return new ResponseEntity<>("Заявка на выпуск карты еще не подтверждена", HttpStatus.CONFLICT);
+            return new ResponseEntity<>(isCreated.get(false), HttpStatus.CONFLICT);
         }
     }
 

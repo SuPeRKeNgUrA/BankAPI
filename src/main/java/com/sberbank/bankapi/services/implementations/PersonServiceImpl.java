@@ -1,6 +1,7 @@
 package com.sberbank.bankapi.services.implementations;
 
 import com.sberbank.bankapi.DAO.PersonDAO;
+import com.sberbank.bankapi.DTO.MessageDTO;
 import com.sberbank.bankapi.DTO.PersonDTO;
 import com.sberbank.bankapi.entities.PersonEntity;
 import com.sberbank.bankapi.services.interfaces.PersonService;
@@ -8,7 +9,9 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @AllArgsConstructor
@@ -42,14 +45,17 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
-    public boolean createRequestToCreateAccount(String passport) {
+    public Map<Boolean, MessageDTO> createRequestToCreateAccount(String passport) {
         PersonEntity personEntity = personDAO.getPersonByPassport(passport);
+        Map<Boolean, MessageDTO> message = new HashMap<>();
         if (personEntity.getRequestAccount() == 0) {
             personEntity.setRequestAccount(personEntity.getRequestAccount() + 1);
             personDAO.savePerson(personEntity);
-            return true;
+            message.put(true, MessageDTO.builder().message("Заявка на открытие счета подана").build());
+        } else {
+            message.put(false, MessageDTO.builder().message("Заявка уже подана").build());
         }
-        return false;
+        return message;
     }
 
     @Override
@@ -65,12 +71,13 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
-    public void confirmRequestToCreateAccount(String passport) {
+    public MessageDTO confirmRequestToCreateAccount(String passport) {
         PersonEntity personEntity = personDAO.getPersonByPassport(passport);
         if (personEntity.getRequestAccount() > personEntity.getConfirmedRequest()) {
             personEntity.setConfirmedRequest(personEntity.getRequestAccount());
         }
         personDAO.savePerson(personEntity);
+        return MessageDTO.builder().message("Заявка на открытие счета подтверждена").build();
     }
 
     @Override

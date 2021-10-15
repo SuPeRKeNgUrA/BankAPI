@@ -4,6 +4,7 @@ import com.sberbank.bankapi.DAO.AccountDAO;
 import com.sberbank.bankapi.DAO.CardDAO;
 import com.sberbank.bankapi.DTO.AccountDTO;
 import com.sberbank.bankapi.DTO.CardDTO;
+import com.sberbank.bankapi.DTO.MessageDTO;
 import com.sberbank.bankapi.entities.AccountEntity;
 import com.sberbank.bankapi.entities.CardEntity;
 import com.sberbank.bankapi.services.interfaces.AccountService;
@@ -12,7 +13,9 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 @Service
@@ -52,16 +55,19 @@ public class CardServiceImpl implements CardService {
     }
 
     @Override
-    public boolean createNewCard(AccountEntity accountEntity, CardEntity cardEntity) {
+    public Map<Boolean, MessageDTO> createNewCard(AccountEntity accountEntity, CardEntity cardEntity) {
+        Map<Boolean, MessageDTO> message = new HashMap<>();
         if (accountEntity.getRequestCard() == accountEntity.getConfirmedRequest()) {
             accountEntity.createCard(cardEntity);
             accountEntity.setRequestCard(0);
             accountEntity.setConfirmedRequest(0);
             cardDAO.saveCard(cardEntity);
             accountDAO.saveAccount(accountEntity);
-            return true;
+            message.put(true, MessageDTO.builder().message("Карта выпущена").build());
+        } else {
+            message.put(false, MessageDTO.builder().message("Заявка на выпуск карты еще не подтверждена").build());
         }
-        return false;
+        return message;
     }
 
     @Override
